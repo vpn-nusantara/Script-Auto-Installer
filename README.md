@@ -147,10 +147,10 @@ Dilengkapi sistem **lisensi berbasis IP VPS menggunakan Cloudflare**, sehingga a
 
 | Paket | Harga |
 |---|---:|
-| 30 Hari | **Rp25.000** |
-| 90 Hari | **Rp65.000** |
-| 180 Hari | **Rp120.000** |
-| 1 Tahun | **Rp200.000** |
+| 30 Hari | **Rp15.000** |
+| 90 Hari | **Rp40.000** |
+| 180 Hari | **Rp70.000** |
+| 1 Tahun | **Rp120.000** |
 
 Semua paket menggunakan sistem aktivasi lisensi berdasarkan IP VPS dan tanggal kedaluwarsa.
 
