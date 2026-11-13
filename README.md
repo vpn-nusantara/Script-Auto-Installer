@@ -121,87 +121,61 @@ Ikuti instruksi pada layar untuk mengatur domain, akun panel, dan token bot Tele
 | Panel web | `https://domain/panel/` |
 | Terminal browser | `https://domain/terminal/` |
 
-## 💻 Perintah nus
+# 🚀 VPN NUSANTARA — AUTO INSTALLER
 
-Gunakan perintah `nus` untuk mengelola akun langsung dari terminal.
+### Solusi Instalasi Server VPN Otomatis, Praktis & Modern
 
-### Contoh penggunaan
+Nikmati kemudahan membangun server VPN dengan **VPN NUSANTARA AUTO INSTALLER**. Dirancang untuk mempermudah proses instalasi dan konfigurasi server dengan sistem yang praktis, cepat, dan mudah digunakan.
 
-```bash
-# Membuat akun SSH
-nus add ssh budi 30 2 rahasia
+Dilengkapi sistem **lisensi berbasis IP VPS menggunakan Cloudflare**, sehingga akses instalasi dapat dikontrol berdasarkan IP dan masa berlaku lisensi.
 
-# Membuat akun VMess
-nus add vmess andi 30 2
+---
 
-# Memperpanjang akun
-nus renew ssh budi 30
+## 💎 KEUNGGULAN
 
-# Menghapus akun
-nus del ssh budi
+- ⚡ Instalasi otomatis dan praktis.
+- 🔐 Sistem aktivasi lisensi berdasarkan IP VPS.
+- ☁️ Verifikasi lisensi melalui Cloudflare.
+- 📅 Masa aktif lisensi dengan tanggal kedaluwarsa.
+- 🛡️ Kontrol akses instalasi berdasarkan izin IP.
+- 🔄 Pengelolaan izin dan masa aktif lisensi.
+- 🖥️ Dirancang untuk penggunaan pada VPS Linux.
 
-# Melihat daftar akun
-nus list [tipe]
+## 💰 DAFTAR HARGA SEWA LISENSI
 
-# Melihat pengguna online
-nus online
+**Satu lisensi berlaku untuk 1 IP VPS.**
 
-# Backup dan restore
-nus backup
-nus restore /root/backup-nusantara-xxxx.json
-```
+| Paket | Harga |
+|---|---:|
+| 30 Hari | **Rp25.000** |
+| 90 Hari | **Rp65.000** |
+| 180 Hari | **Rp120.000** |
+| 1 Tahun | **Rp200.000** |
 
-### Format pembuatan akun SSH
+Semua paket menggunakan sistem aktivasi lisensi berdasarkan IP VPS dan tanggal kedaluwarsa.
 
-```text
-nus add ssh <username> <hari> <batas-login> [password]
-```
+## 📌 KETENTUAN SEWA
 
-Tipe akun yang tersedia: `ssh`, `vmess`, `vless`, `trojan`, dan `zivpn`. Akun SSH juga digunakan untuk layanan SSH UDP.
+1. Satu lisensi hanya berlaku untuk satu IP VPS.
+2. Lisensi memiliki masa aktif sesuai paket yang dipilih.
+3. Lisensi yang kedaluwarsa perlu diperpanjang untuk mendapatkan akses kembali.
+4. Penggantian IP VPS harus dikonfirmasi kepada admin.
+5. Aktivasi dilakukan setelah konfirmasi pembayaran.
 
-## 🤖 Bot Telegram
+## 📞 HUBUNGI ADMIN
 
-Bot Telegram menyediakan pengelolaan akun berdasarkan hak akses.
+**Tertarik menyewa atau ingin melakukan perpanjangan lisensi? Hubungi kami melalui:**
 
-| Perintah | Hak akses |
-|:--|:--|
-| `/trial <tipe>` | Semua pengguna, 1 kali per 24 jam |
-| `/buat <tipe> <user> <hari> [limit]` | Admin dan reseller |
-| `/perpanjang`, `/hapus`, `/detail`, `/list`, `/kuota` | Admin dan reseller |
-| `/online`, `/info`, `/backup` | Admin |
-| `/addreseller <id> <kuota>`, `/delreseller <id>`, `/resellers` | Admin |
+- WhatsApp: https://wa.me/6285181250313
+- Telegram: https://t.me/qim_femashendriyuliadi
 
-Token bot dan ID admin dapat diatur saat instalasi atau melalui **menu nomor 12**.
+## 🔥 VPN NUSANTARA
 
-## 📂 Struktur Repository
+**Praktis dalam instalasi. Mudah dalam pengelolaan. Terpercaya dalam sistem lisensi.**
 
-```text
-.
-├── install.sh        # Installer utama
-├── vps/
-│   ├── core.py       # Mesin akun dan perintah nus
-│   ├── menu.sh       # Menu terminal
-│   ├── panel.py      # Panel web dan API di VPS
-│   ├── bot.py        # Bot Telegram
-│   ├── ws-proxy.py   # SSH WebSocket
-│   ├── secure.sh     # Pengaman VPS (dapat dijalankan mandiri)
-│   └── firewall.sh   # Aturan firewall
-├── frontend/         # Antarmuka panel multi-server
-└── backend/          # Backend panel multi-server
-```
+Terima kasih telah memilih VPN NUSANTARA!
 
-## 🧪 Validasi Otomatis
 
-Repository menjalankan pemeriksaan sintaks Bash dan Python melalui GitHub Actions setiap kali ada perubahan. Pemeriksaan ini membantu menemukan kesalahan sintaks lebih awal, tetapi bukan pengganti pengujian pada VPS uji sebelum dipakai di server produksi.
-
-## 🛡️ Catatan Keamanan
-
-- File backup dan `/etc/nusantara/db.json` berisi password akun. Simpan dengan aman dan jangan membagikannya.
-- Untuk mematikan firewall: `/usr/local/nusantara/firewall.sh off`.
-- Gunakan script hanya pada VPS yang Anda miliki atau kelola dengan izin, serta patuhi ketentuan penyedia VPS.
-- Jangan menyimpan GitHub token, password, atau API key di repository publik.
-- Firewall mengizinkan UDP penuh karena fitur SSH UDP Custom saat ini menggunakan rentang `1–65535`; aktifkan fitur ini hanya bila memang diperlukan. Aturan firewall juga menolak protokol IP lain yang tidak dipakai layanan.
-- Pastikan konfigurasi domain, port, dan firewall sesuai dengan layanan yang Anda aktifkan.
 
 ## ⭐ Dukungan Project
 
@@ -211,11 +185,3 @@ Jika project ini bermanfaat, dukung pengembangannya dengan memberikan **Star** p
 
 [⭐ Beri Star di GitHub](https://github.com/vpn-nusantara/Script-Auto-Installer)
 
----
-
-###  VPN NUSANTARA
-**BUILD • CONNECT • MANAGE**
-
-*Terima kasih telah menggunakan project ini!*
-
-</div>
