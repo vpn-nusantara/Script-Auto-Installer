@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Panel VPN NUSANTARA</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#090d16;color:#f8fafc;font:14px/1.5 system-ui,sans-serif}
+.mono{font-family:ui-monospace,Menlo,Consolas,monospace}
+header{position:sticky;top:0;background:#0c1322;border-bottom:1px solid #1e293b;padding:12px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;z-index:5}
+h1{font-size:16px;margin:0;letter-spacing:.12em}small{color:#64748b}
+nav{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto}
+button,.btn{background:#1e293b;color:#e2e8f0;border:1px solid #334155;border-radius:8px;padding:7px 12px;cursor:pointer;font:inherit;text-decoration:none}
+button:hover{background:#334155}button.p{background:#06b6d4;color:#020617;border-color:#06b6d4;font-weight:600}
+button.d{color:#fb7185;border-color:#f43f5e55;background:#f43f5e1a}button.on{border-color:#06b6d4;color:#22d3ee}
+main{max-width:1100px;margin:0 auto;padding:16px}
+.card{background:#131c31;border:1px solid #1e293b;border-radius:12px;padding:16px;margin-bottom:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.k{color:#94a3b8;font-size:12px;text-transform:uppercase;letter-spacing:.08em}.v{font-size:18px;font-weight:600;word-break:break-all}
+input,select,textarea{background:#0c1322;border:1px solid #1e293b;color:#f1f5f9;border-radius:8px;padding:8px 10px;font:inherit;width:100%}
+textarea{min-height:220px;font-family:ui-monospace,monospace}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:end}.row>div{flex:1;min-width:120px}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:8px;border-bottom:1px solid #1e293b;white-space:nowrap}
+th{color:#94a3b8;font-size:12px;text-transform:uppercase}
+.ok{color:#34d399}.bad{color:#fb7185}.hide{display:none}
+#login{max-width:360px;margin:12vh auto}pre{white-space:pre-wrap;word-break:break-all;background:#000;color:#34d399;padding:12px;border-radius:10px;border:1px solid #1e293b}
+#msg{position:fixed;bottom:16px;right:16px;background:#0c1322;border:1px solid #334155;padding:10px 14px;border-radius:10px;max-width:90vw}
+footer{text-align:center;color:#64748b;padding:24px}
+</style>
+</head>
+<body>
+<div id="login" class="card hide">
+  <h1>VPN NUSANTARA</h1><small>Panel kelola akun</small>
+  <p><input id="lu" placeholder="Username" autocomplete="username"></p>
+  <p><input id="lp" type="password" placeholder="Password" autocomplete="current-password"></p>
+  <button class="p" style="width:100%" onclick="login()">Masuk</button>
+</div>
+<div id="app" class="hide">
+<header>
+  <div><h1>VPN NUSANTARA</h1><small id="dom" class="mono"></small></div>
+  <nav>
+    <button data-v="dash">Dashboard</button><button data-v="akun">Akun</button><button data-v="online">Online</button>
+    <button data-v="banner">Banner</button><button data-v="backup">Backup</button>
+    <a class="btn" href="../terminal/" target="_blank" rel="noopener">Terminal</a><button class="d" onclick="logout()">Keluar</button>
+  </nav>
+</header>
+<main>
+  <section id="v-dash"><div class="grid" id="stats"></div><div class="card"><div class="k">Layanan</div><div class="grid" id="svc" style="margin-top:10px"></div></div></section>
+  <section id="v-akun" class="hide">
+    <div class="card"><div class="row">
+      <div><div class="k">Tipe</div><select id="at" onchange="loadAkun()"><option>ssh</option><option>vmess</option><option>vless</option><option>trojan</option><option>zivpn</option></select></div>
+      <div><div class="k">Username</div><input id="au"></div>
+      <div><div class="k">Password (SSH/ZIVPN)</div><input id="ap" placeholder="otomatis"></div>
+      <div><div class="k">Hari</div><input id="ad" type="number" value="30"></div>
+      <div><div class="k">Batas login</div><input id="al" type="number" value="2"></div>
+      <button class="p" onclick="buat()">Buat akun</button>
+    </div></div>
+    <div class="card tw"><table><thead><tr><th>Username</th><th>Berlaku sampai</th><th>Sisa</th><th>Limit</th><th>Status</th><th></th></tr></thead><tbody id="rows"></tbody></table></div>
+    <pre id="det" class="hide mono"></pre>
+  </section>
+  <section id="v-online" class="hide"><div class="card tw"><button onclick="loadOnline()">Muat ulang</button>
+    <table><thead><tr><th>Tipe</th><th>Username</th><th>IP</th><th>Lewat</th><th></th></tr></thead><tbody id="on"></tbody></table></div></section>
+  <section id="v-banner" class="hide"><div class="card"><div class="k">Banner / pesan saat login SSH (boleh HTML sederhana)</div>
+    <p><textarea id="bn"></textarea></p><button class="p" onclick="saveBanner()">Simpan banner</button></div></section>
+  <section id="v-backup" class="hide"><div class="card"><div class="k">Backup</div><p>Unduh semua akun dan banner dalam satu file.</p><button class="p" onclick="unduh()">Unduh backup</button></div>
+    <div class="card"><div class="k">Restore</div><p class="bad">Semua akun saat ini akan diganti dengan isi file backup.</p><input type="file" id="rf" accept=".json"><p><button class="d" onclick="restore()">Restore dari file</button></p></div></section>
+</main>
+<footer>by : VPN NUSANTARA</footer>
+</div>
+<div id="msg" class="hide"></div>
+<script>
+const $=id=>document.getElementById(id),esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function toast(t,bad){const m=$('msg');m.textContent=t;m.className=bad?'bad':'ok';setTimeout(()=>m.className='hide',3500)}
+async function api(p,body){const r=await fetch('api/'+p,{method:body?'POST':'GET',credentials:'same-origin',headers:body?{'Content-Type':'application/json'}:{},body:body?JSON.stringify(body):undefined});
+  const j=await r.json().catch(()=>({error:'Respons tidak valid'}));if(r.status===401&&p!=='login'){show(false);throw new Error(j.error)}if(!r.ok)throw new Error(j.error||'Gagal');return j}
+function show(inside){$('login').className=inside?'hide':'card';$('app').className=inside?'':'hide'}
+async function login(){try{await api('login',{username:$('lu').value,password:$('lp').value});start()}catch(e){toast(e.message,1)}}
+async function logout(){await api('logout',{}).catch(()=>{});show(false)}
+function view(v){document.querySelectorAll('main section').forEach(s=>s.className=s.id==='v-'+v?'':'hide');document.querySelectorAll('nav button[data-v]').forEach(b=>b.className=b.dataset.v===v?'on':'');
+  ({dash:loadDash,akun:loadAkun,online:loadOnline,banner:loadBanner,backup:()=>{}})[v]()}
+document.querySelectorAll('nav button[data-v]').forEach(b=>b.onclick=()=>view(b.dataset.v));
+const tgl=t=>new Date(t*1000).toLocaleString('id-ID',{dateStyle:'medium',timeStyle:'short'});
+async function loadDash(){const i=await api('info');$('dom').textContent=i.domain+' • '+i.ip;
+  const up=i.uptime,s=[['OS',i.os],['Uptime',Math.floor(up/86400)+' hari '+Math.floor(up%86400/3600)+' jam'],['CPU / Load',i.cpu+' core • '+i.load.join(' ')],['RAM',i.mem_used+' / '+i.mem_total+' MB'],['Disk',i.disk_used+' / '+i.disk_total+' MB']];
+  Object.entries(i.counts).forEach(([k,v])=>s.push(['Akun '+k.toUpperCase(),v]));
+  $('stats').innerHTML=s.map(([k,v])=>`<div class="card" style="margin:0"><div class="k">${esc(k)}</div><div class="v">${esc(v)}</div></div>`).join('');
+  $('svc').innerHTML=Object.entries(i.services).map(([k,v])=>`<div class="mono"><span class="${v==='active'?'ok':'bad'}">●</span> ${esc(k)} <small>${esc(v)}</small></div>`).join('')}
+async function loadAkun(){const t=$('at').value,r=await api('accounts?type='+t);
+  $('rows').innerHTML=r.map(a=>`<tr><td class="mono">${esc(a.user)}</td><td>${tgl(a.exp)}</td><td>${a.days_left} hari</td><td>${a.limit||'∞'}</td><td class="${a.locked?'bad':'ok'}">${a.locked?'terkunci':'aktif'}</td>
+  <td><button onclick="detail('${a.user}')">Detail</button> <button onclick="perpanjang('${a.user}')">Perpanjang</button> <button class="d" onclick="hapus('${a.user}')">Hapus</button></td></tr>`).join('')||'<tr><td colspan="6"><small>Belum ada akun</small></td></tr>'}
+function tampil(d){$('det').className='mono';$('det').textContent=d.lines.map(l=>l[0]+' : '+l[1]).join('\n')+'\n\n'+Object.entries(d.links).map(([k,v])=>k+'\n'+v).join('\n\n')+'\n\n'+d.brand}
+async function buat(){try{tampil(await api('accounts',{type:$('at').value,user:$('au').value,password:$('ap').value,days:+$('ad').value,limit:+$('al').value}));$('au').value='';$('ap').value='';toast('Akun dibuat');loadAkun()}catch(e){toast(e.message,1)}}
+async function detail(u){try{tampil(await api('accounts/detail?type='+$('at').value+'&user='+u))}catch(e){toast(e.message,1)}}
+async function perpanjang(u){const d=prompt('Perpanjang berapa hari?','30');if(!d)return;try{await api('accounts/renew',{type:$('at').value,user:u,days:+d});toast('Akun diperpanjang');loadAkun()}catch(e){toast(e.message,1)}}
+async function hapus(u){if(!confirm('Hapus akun '+u+'?'))return;try{await api('accounts/delete',{type:$('at').value,user:u});toast('Akun dihapus');loadAkun()}catch(e){toast(e.message,1)}}
+async function loadOnline(){const r=await api('online');$('on').innerHTML=r.map(o=>`<tr><td>${esc(o.type)}</td><td class="mono">${esc(o.user)}</td><td class="mono">${esc(o.ip)}</td><td>${esc(o.via)}</td><td><button class="d" onclick="kick('${o.type}','${o.user}')">Putuskan</button></td></tr>`).join('')||'<tr><td colspan="5"><small>Tidak ada pengguna online</small></td></tr>'}
+async function kick(t,u){try{await api('online/kick',{type:t,user:u});toast('Pengguna diputus');loadOnline()}catch(e){toast(e.message,1)}}
+async function loadBanner(){$('bn').value=(await api('banner')).banner}
+async function saveBanner(){try{await api('banner',{banner:$('bn').value});toast('Banner disimpan')}catch(e){toast(e.message,1)}}
+async function unduh(){const b=await api('backup'),a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(b)],{type:'application/json'}));a.download='backup-nusantara.json';a.click()}
+async function restore(){const f=$('rf').files[0];if(!f)return toast('Pilih file backup dulu',1);if(!confirm('Ganti semua akun dengan isi backup?'))return;
+  try{const r=await api('restore',JSON.parse(await f.text()));toast('Restore selesai: '+JSON.stringify(r.restored))}catch(e){toast(e.message,1)}}
+async function start(){try{await api('me');show(true);view('dash')}catch(e){show(false)}}
+$('lp').addEventListener('keydown',e=>e.key==='Enter'&&login());start();
+</script>
+</body>
+</html>
